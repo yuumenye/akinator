@@ -3,9 +3,6 @@
 #include <string.h>
 #include "tree.h"
 
-static struct node *node_ctor();
-static void node_dtor(struct node *node);
-
 struct tree *tree_ctor(void)
 {
         struct tree *tree = (struct tree*) calloc(1, sizeof(struct tree));
@@ -22,7 +19,7 @@ void tree_dtor(struct tree *tree)
         tree = NULL;
 }
 
-static struct node *node_ctor(void)
+struct node *node_ctor(void)
 {
         struct node *node = (struct node*) calloc(1, sizeof(struct node));
         if (!node) {
@@ -32,7 +29,7 @@ static struct node *node_ctor(void)
         return node;
 }
 
-static void node_dtor(struct node *node)
+void node_dtor(struct node *node)
 {
         free(node);
         node = NULL;
