@@ -19,4 +19,6 @@ void tree_dtor(struct tree *tree);
 struct node *node_ctor();
 void node_dtor(struct node *node);
 
+void tree_write(struct tree *tree);
+
 #endif

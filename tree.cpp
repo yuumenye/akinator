@@ -3,6 +3,8 @@
 #include <string.h>
 #include "tree.h"
 
+static void nodes_write(FILE *file, struct node *node);
+
 struct tree *tree_ctor(void)
 {
         struct tree *tree = (struct tree*) calloc(1, sizeof(struct tree));
@@ -33,4 +35,25 @@ void node_dtor(struct node *node)
 {
         free(node);
         node = NULL;
+}
+
+void tree_write(struct tree *tree)
+{
+        FILE *file = fopen("tree.txt", "w");
+        nodes_write(file, tree->root);
+        fclose(file);
+}
+
+static void nodes_write(FILE *file, struct node *node)
+{
+        if (!node)
+                return;
+        
+        fprintf(file, "{\n");
+        fprintf(file, "\"%s\"\n", node->key);
+        
+        nodes_write(file, node->left);
+        nodes_write(file, node->right);
+
+        fprintf(file, "}\n");
 }
