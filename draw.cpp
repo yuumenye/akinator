@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "tree.h"
+#include "draw.h"
 
 static void generate_filename(char *filename, int namelen);
 static void compile_dot(char *filename);
