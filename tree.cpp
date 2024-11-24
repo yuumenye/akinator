@@ -1,9 +1,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #include "tree.h"
 
 static void nodes_write(FILE *file, struct node *node);
+static struct node *nodes_read(FILE *file, struct node *parent);
+static void seek_brace(FILE *file);
+static void get_key(FILE *file, struct node *node);
+static void seek_str(FILE *file);
+static void skip_spaces(FILE *file);
 
 struct tree *tree_ctor(void)
 {
@@ -56,4 +62,72 @@ static void nodes_write(FILE *file, struct node *node)
         nodes_write(file, node->right);
 
         fprintf(file, "}\n");
+}
+
+void tree_read(struct tree *tree)
+{
+        FILE *file = fopen("tree.txt", "r");
+        tree->root = nodes_read(file, NULL);
+        fclose(file);
+}
+
+static struct node *nodes_read(FILE *file, struct node *parent)
+{
+        struct node *node = node_ctor();
+        seek_brace(file);
+        int brace = getc(file);
+
+        if (brace == '{') {
+                node->parent = parent;
+                get_key(file, node);
+        } else {
+                ungetc(brace, file);
+                node_dtor(node);
+                return NULL;
+        }
+
+        node->left = nodes_read(file, node);
+        node->right = nodes_read(file, node);
+
+        getc(file);
+        skip_spaces(file);
+        return node;
+}
+
+static void seek_brace(FILE *file)
+{
+        static int ch = EOF;
+
+        while ((ch = getc(file)) != EOF)
+                if (ch == '{' || ch == '}')
+                        break;
+        ungetc(ch, file);
+}
+
+static void get_key(FILE *file, struct node *node)
+{
+        int ch = EOF;
+        char str[keylen] = "";
+        seek_str(file);
+
+        fscanf(file, "%[^\"]", str);
+        getc(file);
+        strncpy(node->key, str, keylen);
+}
+
+static void seek_str(FILE *file)
+{
+        int ch = EOF;
+        while ((ch = getc(file)) != EOF)
+                if (ch == '"')
+                        break;
+}
+
+static void skip_spaces(FILE *file)
+{
+        int ch = EOF;
+        while ((ch = getc(file)) != EOF)
+                if (!isspace(ch))
+                        break;
+        ungetc(ch, file);
 }
