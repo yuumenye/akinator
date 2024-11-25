@@ -6,7 +6,7 @@
 
 static void nodes_write(FILE *file, struct node *node);
 static struct node *nodes_read(FILE *file, struct node *parent);
-static void seek_brace(FILE *file);
+static int seek_brace(FILE *file);
 static void get_key(FILE *file, struct node *node);
 static void seek_str(FILE *file);
 static void skip_spaces(FILE *file);
@@ -74,8 +74,7 @@ void tree_read(struct tree *tree)
 static struct node *nodes_read(FILE *file, struct node *parent)
 {
         struct node *node = node_ctor();
-        seek_brace(file);
-        int brace = getc(file);
+        int brace = seek_brace(file);
 
         if (brace == '{') {
                 node->parent = parent;
@@ -94,14 +93,14 @@ static struct node *nodes_read(FILE *file, struct node *parent)
         return node;
 }
 
-static void seek_brace(FILE *file)
+static int seek_brace(FILE *file)
 {
         static int ch = EOF;
 
         while ((ch = getc(file)) != EOF)
                 if (ch == '{' || ch == '}')
                         break;
-        ungetc(ch, file);
+        return ch;
 }
 
 static void get_key(FILE *file, struct node *node)
