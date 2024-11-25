@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include "tree.h"
 
+static void subtree_dtor(struct node *node);
 static void nodes_write(FILE *file, struct node *node);
 static struct node *nodes_read(FILE *file, struct node *parent);
 static int seek_brace(FILE *file);
@@ -23,8 +24,18 @@ struct tree *tree_ctor(void)
 
 void tree_dtor(struct tree *tree)
 {
+        subtree_dtor(tree->root);
         free(tree);
         tree = NULL;
+}
+
+static void subtree_dtor(struct node *node)
+{
+        if (!node)
+                return;
+        subtree_dtor(node->left);
+        subtree_dtor(node->right);
+        node_dtor(node);
 }
 
 struct node *node_ctor(void)
