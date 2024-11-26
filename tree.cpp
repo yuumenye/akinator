@@ -57,6 +57,8 @@ void node_dtor(struct node *node)
 void tree_write(struct tree *tree)
 {
         FILE *file = fopen("tree.txt", "w");
+        if (!file)
+                return;
         nodes_write(file, tree->root);
         fclose(file);
 }
@@ -78,12 +80,19 @@ static void nodes_write(FILE *file, struct node *node)
 void tree_read(struct tree *tree)
 {
         FILE *file = fopen("tree.txt", "r");
+        if (!file) {
+                fprintf(stderr, "error: couldn't open file\n");
+                exit(1);
+        }
         tree->root = nodes_read(file, NULL);
         fclose(file);
 }
 
 static struct node *nodes_read(FILE *file, struct node *parent)
 {
+        if (!file)
+                return;
+
         struct node *node = node_ctor();
         int brace = seek_brace(file);
 
