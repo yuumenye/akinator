@@ -74,7 +74,7 @@ static void write_edges(FILE *file, struct node *node)
                 return;
 
         if (node->parent->left == node)
-                fprintf(file, "  n%p:l -> n%p:k\n", node->parent, node);
+                fprintf(file, "  n%p:l -> n%p:k;\n", node->parent, node);
         else
-                fprintf(file, "  n%p:r -> n%p:k\n", node->parent, node);
+                fprintf(file, "  n%p:r -> n%p:k;\n", node->parent, node);
 }

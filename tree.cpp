@@ -91,7 +91,7 @@ void tree_read(struct tree *tree)
 static struct node *nodes_read(FILE *file, struct node *parent)
 {
         if (!file)
-                return;
+                return NULL;
 
         struct node *node = node_ctor();
         int brace = seek_brace(file);
