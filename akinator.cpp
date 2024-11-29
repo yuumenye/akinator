@@ -3,7 +3,7 @@
 #include "tree.h"
 #include "draw.h"
 
-void run()
+void run_akinator()
 {
         struct tree *tree = tree_ctor();
         tree_read(tree);
