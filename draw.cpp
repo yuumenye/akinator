@@ -61,8 +61,10 @@ static void write_nodes(FILE *file, struct node *node)
         if (!node)
                 return;
 
-        fprintf(file, "  n%p [label = \"{<k>%s|{<l>|<r>}}\"];\n",
-                        node, node->key);
+        fprintf(file, "  n%p [label = \"{<k>%s|{<l>%s|<r>%s}}\"];\n",
+                        node, node->key,
+                        (node->left)  ? "-" : "",
+                        (node->right) ? "+" : "");
         write_edges(file, node);
         write_nodes(file, node->left);
         write_nodes(file, node->right);
