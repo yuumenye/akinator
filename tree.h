@@ -22,4 +22,6 @@ void node_dtor(struct node *node);
 void tree_write(struct tree *tree);
 void tree_read(struct tree *tree);
 
+void node_find(struct node *node, struct node **found, char *key);
+
 #endif

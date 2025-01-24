@@ -2,7 +2,7 @@ CC:=g++
 
 all: akinator
 
-akinator: main.o akinator.o tree.o draw.o
+akinator: main.o akinator.o tree.o draw.o stack.o
 	$(CC) $^ -o $@
 
 main.o: main.cpp
@@ -16,6 +16,9 @@ tree.o: tree.cpp
 
 draw.o: draw.cpp
 	$(CC) -c draw.cpp
+
+stack.o: stack.cpp
+	$(CC) -c stack.cpp
 
 clean:
 	rm -rf *.o akinator

@@ -150,3 +150,17 @@ static void skip_spaces(FILE *file)
                         break;
         ungetc(ch, file);
 }
+
+void node_find(struct node *node, struct node **found, char *key)
+{
+        if (!node)
+                return;
+
+        if (strncmp(node->key, key, keylen) == 0) {
+                *found = node;
+                return;
+        }
+
+        node_find(node->left, found, key);
+        node_find(node->right, found, key);
+}
