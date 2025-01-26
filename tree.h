@@ -16,7 +16,7 @@ struct tree {
 
 struct tree *tree_ctor(void);
 void tree_dtor(struct tree *tree);
-struct node *node_ctor();
+struct node *node_ctor(void);
 void node_dtor(struct node *node);
 
 void tree_write(struct tree *tree);
